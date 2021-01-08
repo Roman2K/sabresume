@@ -10,11 +10,11 @@ pp stats: stats.transform_values(&:size)
 item_log = -> item { log[filename: item.fetch("filename")] }
 
 stats.fetch("Downloading", []).each do |item|
-  item.fetch("percentage").to_i > 0 && item.fetch("eta") == "unknown" or next
-  item_log.(item).warn "download stuck, pausing and resuming"
-  nzo_id = item.fetch "nzo_id"
-  sab.queue_pause nzo_id
-  sab.queue_resume nzo_id
+  if item.fetch("percentage").to_i > 0 && item.fetch("eta") == "unknown"
+    item_log.(item).warn "download stuck, deleting"
+    nzo_id = item.fetch "nzo_id"
+    sab.queue_del nzo_id, del_files: true
+  end
 end
 
 stats.fetch("Paused", []).each do |item|
