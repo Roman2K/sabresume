@@ -11,9 +11,9 @@ item_log = -> item { log[filename: item.fetch("filename")] }
 
 stats.fetch("Downloading", []).each do |item|
   if item.fetch("percentage").to_i > 0 && item.fetch("eta") == "unknown"
-    item_log.(item).warn "download stuck, deleting"
-    nzo_id = item.fetch "nzo_id"
-    sab.queue_del nzo_id, del_files: true
+    item_log.(item).warn "download stuck, restarting"
+    sab.restart
+    exit 0
   end
 end
 
