@@ -9,11 +9,13 @@ GEM
   remote: https://rubygems.org/
   specs:
     net_http_unix (0.2.2)
+    redis (4.2.5)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
+  redis
   utils-ruby!
 
 BUNDLED WITH
